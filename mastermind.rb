@@ -15,11 +15,18 @@ class CodeBreaker < Player
 end
 
 class Board
-  
+  attr_accessor :game
+  def initialize 
+    @game = ''
+  end
+    
   def play_game(codeMaker)
     12.times do  
       correct_color_space = 0 
       correct_color = 0
+      if @game == 'won'
+        break
+      end
       4.times do
         codeMaker.secret_colors.each_with_index do |secret_color, index|
           puts "What color do you want to choose for peg #{index + 1}?"
@@ -35,7 +42,9 @@ class Board
           end
         end
        if correct_color_space == 4
+         @game = 'won'
          puts 'You win!'
+         break
        else  
        puts "There were #{correct_color_space} choices with the correct color and correct space selected. #{correct_color} choices had the correct color, but the incorrect space was picked"
        p codeMaker.secret_colors
