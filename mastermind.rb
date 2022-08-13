@@ -22,6 +22,7 @@ class CodeMaker
     end
   
     def play_game(codeMaker)
+      puts "Mastermind is a code breaking game with two players. In this version of the game, only one player is a person while the other is a computer. The game board has 12 rows of 4 holes, where 4 colored pegs can be placed. There are 6 available colors to choose, which are blue, red, green, yellow, orange, and purple. The codemaker chooses 4 different colors to place in 4 spots. The codebreaker has 12 turns to guess the correct order in which the colors are placed. If all 4 colors are guessed in the correct position, the codebreaker wins."
       puts 'Would you like to be the codebreaker or the codemaker?'
       code_choice = gets.chomp.downcase
       if code_choice != 'codemaker' && code_choice != 'codebreaker'
@@ -30,6 +31,7 @@ class CodeMaker
       elsif code_choice == 'codemaker'
         codeMaker.human_secret_colors
         correct_computer_choices = ['incorrect', 'incorrect', 'incorrect', 'incorrect']
+        correct_computer_color_choices = []
         remaining_computer_choices = ['blue', 'yellow', 'red', 'green', 
                               'orange', 'purple']
         12.times do
@@ -40,15 +42,23 @@ class CodeMaker
           if correct_computer_choices == ['incorrect', 'incorrect', 'incorrect', 'incorrect']
              p computer_choices = %w[blue yellow red green orange purple].sample(4)
              p correct_computer_choices
-          
           else 
             computer_choices = correct_computer_choices
             computer_choices.each_with_index do |color, index|
               if color == 'incorrect'
+                 # the color needs to not be a color already in the computer choices array
                  computer_choices[index] = remaining_computer_choices.sample(1).join
+                 p computer_choices[index]
+                 computer_choices.each do |duplicate_color|
+                   if duplicate_color == computer_choices[index]
+                     computer_choices[index] = remaining_computer_choices.sample(1).join
+                     p computer_choices[index]
+                   end  
+                 end
               end
             end
-            p computer_choices
+            p computer_choices 
+            p correct_computer_color_choices 
           end
             
           codeMaker.secret_colors.each_with_index do |secret_color, index|
@@ -56,12 +66,12 @@ class CodeMaker
               correct_color_space += 1
               correct_computer_choices[index] = secret_color
               remaining_computer_choices.delete(secret_color)
-            elsif secret_color != computer_choices[index]
-              correct_computer_choices[index] = 'incorrect'
             else
+              correct_computer_choices[index] = 'incorrect'
               codeMaker.secret_colors.each do |secret_color|
                 if computer_choices[index] == secret_color  
                 correct_color += 1 
+                correct_computer_color_choices.push(secret_color)
                 end
               end
             end
@@ -114,4 +124,3 @@ class CodeMaker
   coder = CodeMaker.new
   
   board.play_game(coder)
-  
