@@ -9,8 +9,14 @@ class CodeMaker
       @secret_colors = []
       4.times do |index|
         puts "What color do you want to choose for peg #{index + 1}?"
-        peg_choice = gets.chomp.downcase
-        @secret_colors.push(peg_choice)
+        choice = gets.chomp.downcase
+        if choice != 'blue' || choice != 'red' || choice != 'green' || choice != 'yellow' || choice != 'orange' || 
+        choice != 'purple'
+          puts "That's not one of the color options. Please choose either blue, yellow, red, green, orange, or purple"
+          puts "What color do you want to choose for peg #{index + 1}?"
+          choice = gets.chomp.downcase
+        end
+        @secret_colors.push(choice)
       end
     end
   end
