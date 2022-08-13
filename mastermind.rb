@@ -97,6 +97,12 @@ class CodeMaker
             codeMaker.secret_colors.each_with_index do |secret_color, index|
               puts "What color do you want to choose for peg #{index + 1}?"
               choice = gets.chomp.downcase
+              if choice != 'blue' || choice != 'red' || choice != 'green' || choice != 'yellow' || choice != 'orange' || 
+              choice != 'purple'
+                puts "That's not one of the color options. Please choose either blue, yellow, red, green, orange, or purple"
+                puts "What color do you want to choose for peg #{index + 1}?"
+                choice = gets.chomp.downcase
+              end
               if choice == secret_color
                 correct_color_space += 1
               else
