@@ -56,7 +56,6 @@ class CodeMaker
             computer_choices = correct_computer_choices
             correct_computer_color_choices_selector = correct_computer_color_choices
             remaining_computer_choices_selector = remaining_computer_choices
-            p correct_computer_color_choices_selector
             if correct_computer_color_choices_selector != []
               while correct_computer_color_choices_selector != [] do
                  computer_choice_index = rand(0..3)
