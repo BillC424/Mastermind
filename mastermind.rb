@@ -10,7 +10,7 @@ class CodeMaker
       4.times do |index|
         puts "What color do you want to choose for peg #{index + 1}?"
         choice = gets.chomp.downcase
-        if choice != 'blue' || choice != 'red' || choice != 'green' || choice != 'yellow' || choice != 'orange' || 
+        if choice != 'blue' && choice != 'red' && choice != 'green' && choice != 'yellow' && choice != 'orange' && 
         choice != 'purple'
           puts "That's not one of the color options. Please choose either blue, yellow, red, green, orange, or purple"
           puts "What color do you want to choose for peg #{index + 1}?"
@@ -38,6 +38,7 @@ class CodeMaker
         codeMaker.human_secret_colors
         correct_computer_choices = ['incorrect', 'incorrect', 'incorrect', 'incorrect']
         correct_computer_color_choices = []
+        correct_computer_color_choices_selector = []
         remaining_computer_choices = ['blue', 'yellow', 'red', 'green', 
                               'orange', 'purple']
         12.times do
@@ -45,43 +46,80 @@ class CodeMaker
           correct_color = 0
           break if @game == 'won'
           p codeMaker.secret_colors
-          if correct_computer_choices == ['incorrect', 'incorrect', 'incorrect', 'incorrect']
+          p correct_computer_color_choices
+  
+          # Process for computer player to make 4 selections 
+          if correct_computer_choices == ['incorrect', 'incorrect', 'incorrect', 'incorrect'] && correct_computer_color_choices == []
              p computer_choices = %w[blue yellow red green orange purple].sample(4)
-             p correct_computer_choices
           else 
             computer_choices = correct_computer_choices
-            computer_choices.each_with_index do |color, index|
-              if color == 'incorrect'
-                 # the color needs to not be a color already in the computer choices array
-                 computer_choices[index] = remaining_computer_choices.sample(1).join
-                 p computer_choices[index]
-                 computer_choices.each do |duplicate_color|
-                   if duplicate_color == computer_choices[index]
-                     computer_choices[index] = remaining_computer_choices.sample(1).join
-                     p computer_choices[index]
-                   end  
+            correct_computer_color_choices_selector = correct_computer_color_choices
+            remaining_computer_choices_selector = remaining_computer_choices
+            p correct_computer_color_choices_selector
+            if correct_computer_color_choices_selector != []
+              while correct_computer_color_choices_selector == [] do
+                 computer_choice_index = rand(0..3)
+                 if computer_choices[computer_choice_index] = 'incorrect'
+                   correct_computer_color_choices_selector.sample(1).join = computer_choices[computer_choice_index]
+                   correct_computer_color_choices_selector.delete(computer_choices[computer_choice_index])
                  end
               end
             end
-            p computer_choices 
-            p correct_computer_color_choices 
+            computer_choices.each_with_index do |color, index|
+              if color == 'incorrect' && correct_computer_color_choices_selector != []
+                 double_color_check = correct_computer_color_choices_selector.sample(1).join
+                 if computer_choices.include?(double_color_check)
+                   correct_computer_color_choices_selector.delete(double_color_check)
+                   if correct_computer_color_choices_selector != []
+                     computer_choices[index] = correct_computer_color_choices_selector.sample(1).join
+                     double_color_check = remaining_computer_choices.sample(1).join
+                     if computer_choices.include?(double_color_check)
+                       computer_choices[index] = remaining_computer_choices.sample(1).join
+                     else
+                       computer_choices[index] = double_color_check
+                     end
+                   end
+                 else
+                   computer_choices[index] = double_color_check
+                 end
+              elsif color == 'incorrect'
+                 double_color_check = remaining_computer_choices.sample(1).join
+                 if computer_choices.include?(double_color_check)
+                   computer_choices[index] = remaining_computer_choices.sample(1).join
+                 else
+                   computer_choices[index] = double_color_check
+                 end
+              end
+            end
+            p computer_choices
           end
-            
           codeMaker.secret_colors.each_with_index do |secret_color, index|
             if secret_color == computer_choices[index]
               correct_color_space += 1
               correct_computer_choices[index] = secret_color
               remaining_computer_choices.delete(secret_color)
+              if correct_computer_color_choices.include?(secret_color)
+                correct_computer_color_choices.delete(secret_color)
+              end
             else
-              correct_computer_choices[index] = 'incorrect'
               codeMaker.secret_colors.each do |secret_color|
-                if computer_choices[index] == secret_color  
+                p secret_color
+                p computer_choices[index]
+                p computer_choices
+                if p computer_choices[index] == secret_color  
                 correct_color += 1 
-                correct_computer_color_choices.push(secret_color)
+                  #unless correct_computer_color_choices.include?(secret_color)
+                  #  correct_computer_color_choices.push(secret_color)
+                  #end  
                 end
               end
             end
           end
+          codeMaker.secret_colors.each_with_index do |secret_color, index|
+            if secret_color != computer_choices[index]
+              correct_computer_choices[index] = 'incorrect'
+            end
+          end  
           if correct_color_space == 4
             @game = 'won'
             puts '4 correct choices! The computer wins!'
@@ -103,7 +141,7 @@ class CodeMaker
             codeMaker.secret_colors.each_with_index do |secret_color, index|
               puts "What color do you want to choose for peg #{index + 1}?"
               choice = gets.chomp.downcase
-              if choice != 'blue' || choice != 'red' || choice != 'green' || choice != 'yellow' || choice != 'orange' || 
+              if choice != 'blue' && choice != 'red' && choice != 'green' && choice != 'yellow' && choice != 'orange' && 
               choice != 'purple'
                 puts "That's not one of the color options. Please choose either blue, yellow, red, green, orange, or purple"
                 puts "What color do you want to choose for peg #{index + 1}?"
