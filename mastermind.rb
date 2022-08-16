@@ -41,6 +41,7 @@ class CodeMaker
         correct_computer_color_choices_selector = []
         remaining_computer_choices = ['blue', 'yellow', 'red', 'green', 
                               'orange', 'purple']
+        remaining_computer_choices_selector = []
         12.times do
           correct_color_space = 0
           correct_color = 0
@@ -57,38 +58,25 @@ class CodeMaker
             remaining_computer_choices_selector = remaining_computer_choices
             p correct_computer_color_choices_selector
             if correct_computer_color_choices_selector != []
-              while correct_computer_color_choices_selector == [] do
+              while correct_computer_color_choices_selector != [] do
                  computer_choice_index = rand(0..3)
-                 if computer_choices[computer_choice_index] = 'incorrect'
-                   correct_computer_color_choices_selector.sample(1).join = computer_choices[computer_choice_index]
-                   correct_computer_color_choices_selector.delete(computer_choices[computer_choice_index])
-                 end
+                if correct_computer_choices[computer_choice_index] != 'incorrect'
+                  next
+                else  
+                  if computer_choices[computer_choice_index] = 'incorrect'
+                    computer_choices[computer_choice_index] = correct_computer_color_choices_selector.sample(1).join
+                    correct_computer_color_choices_selector.delete(computer_choices[computer_choice_index])
+                    remaining_computer_choices_selector.delete(computer_choices[computer_choice_index])
+                  end
+                end
               end
             end
             computer_choices.each_with_index do |color, index|
-              if color == 'incorrect' && correct_computer_color_choices_selector != []
-                 double_color_check = correct_computer_color_choices_selector.sample(1).join
-                 if computer_choices.include?(double_color_check)
-                   correct_computer_color_choices_selector.delete(double_color_check)
-                   if correct_computer_color_choices_selector != []
-                     computer_choices[index] = correct_computer_color_choices_selector.sample(1).join
-                     double_color_check = remaining_computer_choices.sample(1).join
-                     if computer_choices.include?(double_color_check)
-                       computer_choices[index] = remaining_computer_choices.sample(1).join
-                     else
-                       computer_choices[index] = double_color_check
-                     end
-                   end
-                 else
-                   computer_choices[index] = double_color_check
-                 end
-              elsif color == 'incorrect'
-                 double_color_check = remaining_computer_choices.sample(1).join
-                 if computer_choices.include?(double_color_check)
-                   computer_choices[index] = remaining_computer_choices.sample(1).join
-                 else
-                   computer_choices[index] = double_color_check
-                 end
+              if color == 'incorrect'
+                double_color_check = remaining_computer_choices_selector.sample(1).join
+                p double_color_check
+                remaining_computer_choices_selector.delete(double_color_check)
+                computer_choices[index] = double_color_check
               end
             end
             p computer_choices
@@ -103,14 +91,11 @@ class CodeMaker
               end
             else
               codeMaker.secret_colors.each do |secret_color|
-                p secret_color
-                p computer_choices[index]
-                p computer_choices
-                if p computer_choices[index] == secret_color  
+                if computer_choices[index] == secret_color  
                 correct_color += 1 
-                  #unless correct_computer_color_choices.include?(secret_color)
-                  #  correct_computer_color_choices.push(secret_color)
-                  #end  
+                  unless correct_computer_color_choices.include?(secret_color)
+                    correct_computer_color_choices.push(secret_color)
+                  end  
                 end
               end
             end
