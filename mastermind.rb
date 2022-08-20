@@ -168,7 +168,11 @@ class Board
 
   # lets human player decide whether they want to be the codemaker or codebreaker
   def play_game
-    puts 'Mastermind is a code breaking game with two players. In this version of the game, only one player is a person while the other is a computer. The game board has 12 rows of 4 holes, where 4 colored pegs can be placed. There are 6 available colors to choose, which are blue, red, green, yellow, orange, and purple. The codemaker chooses 4 different colors to place in 4 spots. The codebreaker has 12 turns to guess the correct order in which the colors are placed. If all 4 colors are guessed in the correct position, the codebreaker wins.'
+    puts 'Mastermind is a code breaking game with two players. In this version of the game, only one player is a person while the other is a computer.'
+    puts 'The game board has 12 rows of 4 holes, where 4 colored pegs can be placed.  The codemaker chooses 4 different colors to place in 4 spots.'
+    puts 'There are 6 available colors to choose, which are blue, red, green, yellow, orange, and purple.'
+    puts 'The codebreaker has 12 turns to guess the correct order in which the colors are placed.'
+    puts 'If all 4 colors are guessed in the correct position, the codebreaker wins.'
     puts 'Would you like to be the codebreaker or the codemaker?'
     code_choice = gets.chomp.downcase
     if code_choice != 'codemaker' && code_choice != 'codebreaker'
