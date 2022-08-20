@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Class to define variables and methods for ComputerPlayer
 class ComputerPlayer
   attr_reader :secret_colors
 
@@ -101,6 +102,7 @@ class ComputerPlayer
   end
 end
 
+# Class to define variables and methods for HumanPlayer
 class HumanPlayer
   attr_reader :secret_colors
 
@@ -157,6 +159,7 @@ class HumanPlayer
   end
 end
 
+# Class to create HumanPlayer and ComputerPlayer objects and to control game flow
 class Board
   attr_accessor :game
 
