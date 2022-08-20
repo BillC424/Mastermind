@@ -79,8 +79,6 @@ class ComputerPlayer
 
   def code_breaker(human, board)
     12.times do
-      @correct_color_space = 0
-      @correct_color = 0
       break if board.game == 'won'
 
       p human.secret_colors
